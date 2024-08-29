@@ -1,9 +1,9 @@
 package service
 
-type bankService struct {
+type BankService struct {
 	db BankInt
 }
 
-func New(db BankInt) *bankService {
-	return &bankService{db: db}
+func New(db BankInt) *BankService {
+	return &BankService{db: db}
 }
