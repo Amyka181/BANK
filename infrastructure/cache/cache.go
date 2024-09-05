@@ -3,13 +3,13 @@ package cache
 import (
 	"Bankirka/internal/entity"
 	"errors"
-	"fmt"
 )
 
 var (
-	NegativeBalanceErr = errors.New("Ваш баланс отрицательный")
-	AccountExistErr    = errors.New("Аккаунт уже существует")
-	NoAccountErr       = errors.New("Аккаунта не существует")
+	negativeBalanceErr = errors.New("your balance is negative")
+	noEnoughMoneyErr   = errors.New("not enough money to receive")
+	accountExistErr    = errors.New("account already exists")
+	noAccountErr       = errors.New("account does not exist")
 )
 
 type bd struct {
@@ -24,12 +24,12 @@ func New() *bd {
 
 func (b *bd) CreatePerson(id int, bal entity.Balance) error {
 	if bal.Money < 0 {
-		return NegativeBalanceErr
+		return negativeBalanceErr
 	}
 
 	_, ok := b.person[id]
 	if ok {
-		return AccountExistErr
+		return accountExistErr
 	}
 
 	b.person[id] = bal
@@ -39,11 +39,11 @@ func (b *bd) CreatePerson(id int, bal entity.Balance) error {
 func (b *bd) ChangeBalance(id int, dif entity.Difference) error {
 	bal, ok := b.person[id]
 	if !ok {
-		return NoAccountErr
+		return noAccountErr
 	}
 
 	if bal.Money+dif.Quantity < 0 {
-		return NegativeBalanceErr
+		return noEnoughMoneyErr
 	}
 
 	a := bal.Money + dif.Quantity
@@ -54,10 +54,8 @@ func (b *bd) ChangeBalance(id int, dif entity.Difference) error {
 func (b *bd) ShowBalance(id int) (int, error) {
 	_, ok := b.person[id]
 	if !ok {
-		return 0, NoAccountErr
+		return 0, noAccountErr
 	}
-
-	fmt.Println("Ваш баланс:", b.person[id].Money)
 
 	return b.person[id].Money, nil
 }
