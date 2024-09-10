@@ -5,10 +5,10 @@ import (
 )
 
 func (b *BankService) Add(amount entity.Difference, id int) (*entity.User, error) {
-	_, err := b.db.ShowBalance(id)
-	if err != nil {
-		return nil, err
-	}
+	//_, err := b.db.ShowBalance(id)
+	//if err != nil {
+	//	return nil, err
+	//}
 
 	er := b.db.ChangeBalance(id, amount)
 	if er != nil {

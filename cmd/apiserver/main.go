@@ -13,9 +13,9 @@ func main() {
 	bankService := service.New(c)
 	r := chi.NewRouter()
 	h := bankServ.NewBankHandler(bankService)
-	r.Post("/create", h.CreatePersonHttp)
-	r.Post("/change", h.ChangeBalanceHttp)
-	r.Post("/show", h.ShowBalanceHttp)
+	r.Post("/create", h.CreatePersonHandler)
+	r.Post("/change", h.ChangeBalanceHandler)
+	r.Post("/show", h.ShowBalanceHandler)
 
 	http.ListenAndServe("localhost:8080", r)
 
