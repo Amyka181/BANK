@@ -1,11 +1,10 @@
 package service
 
 import (
-	"Bankirka/infrastructure/cache"
 	"Bankirka/internal/entity"
 )
 
-func (b *BankService) AntiAdd(amount entity.Difference, id int) (*entity.User, error) {
+func (b *BankService) antiAdd(amount entity.Difference, id int) (*entity.User, error) {
 
 	money, err := b.db.ShowBalance(id)
 	if err != nil {
@@ -13,7 +12,7 @@ func (b *BankService) AntiAdd(amount entity.Difference, id int) (*entity.User, e
 	}
 
 	if money+amount.Quantity*(-1) < 0 {
-		return nil, cache.NoEnoughMoneyErr
+		return nil, NoEnoughMoneyErr
 	}
 
 	amount.Quantity = amount.Quantity * (-1)

@@ -1,7 +1,6 @@
 package http
 
 import (
-	"Bankirka/infrastructure/cache"
 	"Bankirka/internal/entity"
 	"encoding/json"
 	"io"
@@ -18,6 +17,7 @@ func (h *BankHandler) CreatePersonHandler(w http.ResponseWriter, req *http.Reque
 	byteBody, err := io.ReadAll(body)
 	if err != nil {
 		ErrorResponse(w, http.StatusBadRequest, err)
+		return
 	}
 	defer body.Close()
 
@@ -25,11 +25,6 @@ func (h *BankHandler) CreatePersonHandler(w http.ResponseWriter, req *http.Reque
 	err = json.Unmarshal(byteBody, &userReq)
 	if err != nil {
 		ErrorResponse(w, http.StatusBadRequest, err)
-	}
-
-	if userReq.Balance < 0 {
-		BeautifulErrorResponse(w, http.StatusBadRequest, cache.NegativeBalanceErr)
-		//ErrorResponse(w, http.StatusBadRequest, cache.NegativeBalanceErr)
 		return
 	}
 
@@ -37,7 +32,8 @@ func (h *BankHandler) CreatePersonHandler(w http.ResponseWriter, req *http.Reque
 
 	if err != nil {
 		BeautifulErrorResponse(w, http.StatusBadRequest, err)
-	} else {
-		OkResponse(w, http.StatusCreated, user)
+		return
 	}
+	OkResponse(w, http.StatusCreated, user)
+
 }

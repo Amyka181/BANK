@@ -2,15 +2,8 @@ package cache
 
 import (
 	"Bankirka/internal/entity"
-	"errors"
+	"Bankirka/internal/service"
 	"sync"
-)
-
-var (
-	NegativeBalanceErr = errors.New("your balance is negative")
-	NoEnoughMoneyErr   = errors.New("not enough money to receive")
-	AccountExistErr    = errors.New("account already exists")
-	NoAccountErr       = errors.New("account does not exist")
 )
 
 type bd struct {
@@ -30,7 +23,7 @@ func (b *bd) CreatePerson(id int, bal entity.Balance) error {
 
 	_, ok := b.person[id]
 	if ok {
-		return AccountExistErr
+		return service.AccountExistErr
 	}
 
 	b.person[id] = bal
@@ -43,7 +36,7 @@ func (b *bd) ChangeBalance(id int, dif entity.Difference) error {
 
 	bal, ok := b.person[id]
 	if !ok {
-		return NoAccountErr
+		return service.NoAccountErr
 	}
 
 	a := bal.Money + dif.Quantity
@@ -56,7 +49,7 @@ func (b *bd) ShowBalance(id int) (int, error) {
 	defer b.mu.Unlock()
 	_, ok := b.person[id]
 	if !ok {
-		return 0, NoAccountErr
+		return 0, service.NoAccountErr
 	}
 
 	return b.person[id].Money, nil

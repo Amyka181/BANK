@@ -4,15 +4,14 @@ import (
 	"Bankirka/internal/entity"
 )
 
-func (b *BankService) Add(amount entity.Difference, id int) (*entity.User, error) {
-	//_, err := b.db.ShowBalance(id)
-	//if err != nil {
-	//	return nil, err
-	//}
+func (b *BankService) add(amount entity.Difference, id int) (*entity.User, error) {
+	if amount.Quantity < 0 {
+		return nil, NegativeValueBalanceErr
+	}
 
-	er := b.db.ChangeBalance(id, amount)
-	if er != nil {
-		return nil, er
+	err := b.db.ChangeBalance(id, amount)
+	if err != nil {
+		return nil, err
 	}
 	bal, _ := b.db.ShowBalance(id)
 	return &entity.User{ID: id, Balance: entity.Balance{Money: bal}}, nil
