@@ -5,7 +5,7 @@ import (
 )
 
 func (b *BankService) Show(person entity.User) (*entity.User, error) {
-	bal, err := b.db.ShowBalance(person.ID)
+	bal, err := b.Db.ShowBalance(person.ID)
 	if err != nil {
 		return nil, err
 	}

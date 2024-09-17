@@ -9,7 +9,7 @@ func (b *BankService) CreateUser(id int, bal entity.Balance) (*entity.User, erro
 		return nil, NegativeBalanceErr
 	}
 
-	err := b.db.CreatePerson(id, bal)
+	err := b.Db.CreatePerson(id, bal)
 	if err != nil {
 		return nil, err
 	}
