@@ -6,18 +6,18 @@ import (
 	"sync"
 )
 
-type bd struct {
+type Bd struct {
 	person map[int]entity.Balance
 	mu     sync.Mutex
 }
 
-func New() *bd {
-	return &bd{
+func New() *Bd {
+	return &Bd{
 		person: make(map[int]entity.Balance),
 	}
 }
 
-func (b *bd) CreatePerson(id int, bal entity.Balance) error {
+func (b *Bd) CreatePerson(id int, bal entity.Balance) error {
 	b.mu.Lock()
 	defer b.mu.Unlock()
 
@@ -30,7 +30,7 @@ func (b *bd) CreatePerson(id int, bal entity.Balance) error {
 	return nil
 }
 
-func (b *bd) ChangeBalance(id int, dif entity.Difference) error {
+func (b *Bd) ChangeBalance(id int, dif entity.Difference) error {
 	b.mu.Lock()
 	defer b.mu.Unlock()
 
@@ -44,7 +44,7 @@ func (b *bd) ChangeBalance(id int, dif entity.Difference) error {
 	return nil
 }
 
-func (b *bd) ShowBalance(id int) (int, error) {
+func (b *Bd) ShowBalance(id int) (int, error) {
 	b.mu.Lock()
 	defer b.mu.Unlock()
 	_, ok := b.person[id]
