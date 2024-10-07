@@ -1,7 +1,7 @@
 package main
 
 import (
-	"Bankirka/infrastructure/cache"
+	"Bankirka/infrastructure/database_bank"
 	"Bankirka/internal/service"
 	bankServ "Bankirka/pkg/http"
 	"github.com/go-chi/chi/v5"
@@ -9,8 +9,12 @@ import (
 )
 
 func main() {
-	c := cache.New()
-	bankService := service.New(c)
+
+	//c := cache.New()
+	//bankService := service.New(c)
+	db := database_bank.NewDB()
+	bankService := service.New(db)
+
 	r := chi.NewRouter()
 	h := bankServ.NewBankHandler(bankService)
 	r.Post("/create", h.CreatePersonHandler)
