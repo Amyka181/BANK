@@ -1,10 +1,11 @@
 package main
 
 import (
-	"Bankirka/infrastructure/database_bank"
+	"Bankirka/infrastructure/postgres"
 	"Bankirka/internal/service"
 	bankServ "Bankirka/pkg/http"
 	"github.com/go-chi/chi/v5"
+	"log"
 	"net/http"
 )
 
@@ -12,15 +13,16 @@ func main() {
 
 	//c := cache.New()
 	//bankService := service.New(c)
-	db := database_bank.NewDB()
+	db := postgres.NewDB()
 	bankService := service.New(db)
 
 	r := chi.NewRouter()
 	h := bankServ.NewBankHandler(bankService)
-	r.Post("/create", h.CreatePersonHandler)
-	r.Post("/change", h.ChangeBalanceHandler)
-	r.Post("/show", h.ShowBalanceHandler)
+	h.ApiRoute(r)
 
-	http.ListenAndServe("localhost:8080", r)
+	err := http.ListenAndServe("localhost:8080", r)
+	if err != nil {
+		log.Panic("Сервер недоступен")
+	}
 
 }

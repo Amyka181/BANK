@@ -1,16 +1,15 @@
-package cache
+package service
 
 import (
 	"Bankirka/internal/entity"
-	"Bankirka/internal/service"
 	mock_service "Bankirka/mocks"
 	"github.com/stretchr/testify/assert"
 	"go.uber.org/mock/gomock"
 	"testing"
 )
 
-func NewMockService(mockRep *mock_service.MockBankInt) *service.BankService {
-	return &service.BankService{Db: mockRep}
+func NewMockService(mockRep *mock_service.MockBankInt) *BankService {
+	return &BankService{Db: mockRep}
 }
 
 func Test_bd_CreatePerson(t *testing.T) {
@@ -44,10 +43,10 @@ func Test_bd_CreatePerson(t *testing.T) {
 			name: "Create person failed, account already exists",
 			args: args{id: 1, bal: entity.Balance{Money: 100}},
 			prepare: func() {
-				mockRep.EXPECT().CreatePerson(1, entity.Balance{Money: 100}).Return(service.AccountExistErr)
+				mockRep.EXPECT().CreatePerson(1, entity.Balance{Money: 100}).Return(AccountExistErr)
 			},
 			want:    nil,
-			wantErr: service.AccountExistErr,
+			wantErr: AccountExistErr,
 		},
 		{
 			name: "Create person failed, balance is negative",
@@ -56,7 +55,7 @@ func Test_bd_CreatePerson(t *testing.T) {
 
 			},
 			want:    nil,
-			wantErr: service.NegativeBalanceErr,
+			wantErr: NegativeBalanceErr,
 		},
 	}
 	for _, tt := range tests {
@@ -113,10 +112,10 @@ func Test_bd_ChangeBalance(t *testing.T) {
 			name: "Change balance failed, account does not exist",
 			args: args{operation: "пополнить", amount: entity.Difference{Quantity: 1000}, id: 10},
 			prepare: func() {
-				mockRep.EXPECT().ChangeBalance(10, entity.Difference{Quantity: 1000}).Return(service.NoAccountErr)
+				mockRep.EXPECT().ChangeBalance(10, entity.Difference{Quantity: 1000}).Return(NoAccountErr)
 			},
 			want:    nil,
-			wantErr: service.NoAccountErr,
+			wantErr: NoAccountErr,
 		},
 		{
 			name: "Change balance failed, not enough money to receive",
@@ -125,7 +124,7 @@ func Test_bd_ChangeBalance(t *testing.T) {
 				mockRep.EXPECT().ShowBalance(1).Return(1000, nil)
 			},
 			want:    nil,
-			wantErr: service.NoEnoughMoneyErr,
+			wantErr: NoEnoughMoneyErr,
 		},
 		{
 			name: "Change balance failed, invalid operation",
@@ -134,7 +133,7 @@ func Test_bd_ChangeBalance(t *testing.T) {
 
 			},
 			want:    nil,
-			wantErr: service.InvalidOperation,
+			wantErr: InvalidOperation,
 		},
 	}
 	for _, tt := range tests {
@@ -176,10 +175,10 @@ func Test_bd_ShowBalance(t *testing.T) {
 			name: "Show balance failed, account does not exist",
 			args: args{person: entity.User{ID: 7, Balance: entity.Balance{Money: 800}}},
 			prepare: func() {
-				mockRep.EXPECT().ShowBalance(7).Return(0, service.NoAccountErr)
+				mockRep.EXPECT().ShowBalance(7).Return(0, NoAccountErr)
 			},
 			want:    nil,
-			wantErr: service.NoAccountErr,
+			wantErr: NoAccountErr,
 		},
 	}
 	for _, tt := range tests {
