@@ -9,6 +9,14 @@ import (
 )
 
 type Config struct {
+	BDVersion
+	BDInfo
+}
+type BDVersion struct {
+	Version string
+}
+
+type BDInfo struct {
 	Host     string
 	Port     string
 	User     string
@@ -17,19 +25,19 @@ type Config struct {
 }
 
 func LoadEnv() (*Config, error) {
-	// Загружаем переменные окружения из файла .env
+
 	err := godotenv.Load()
 	if err != nil {
 		return nil, fmt.Errorf("Ошибка загрузки .env файла: %v", err)
 	}
 
-	// Читаем переменные окружения
 	config := &Config{
-		Host:     os.Getenv("DB_HOST"),
-		Port:     os.Getenv("DB_PORT"),
-		User:     os.Getenv("DB_USER"),
-		Password: os.Getenv("DB_PASSWORD"),
-		DBName:   os.Getenv("DB_NAME"),
+		BDVersion{Version: os.Getenv("VERSION")},
+		BDInfo{Host: os.Getenv("DB_HOST"),
+			Port:     os.Getenv("DB_PORT"),
+			User:     os.Getenv("DB_USER"),
+			Password: os.Getenv("DB_PASSWORD"),
+			DBName:   os.Getenv("DB_NAME")},
 	}
 
 	return config, nil

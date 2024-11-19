@@ -19,6 +19,7 @@ func main() {
 	bankService := service.New(db)
 
 	r := chi.NewRouter()
+	r.Use(bankServ.MetricsMiddleware)
 	h := bankServ.NewBankHandler(bankService)
 	h.ApiRoute(r)
 	r.Mount("/debug/pprof/", http.StripPrefix("/debug/pprof", http.HandlerFunc(pprof.Index)))
