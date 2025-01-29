@@ -2,6 +2,7 @@ package http
 
 import (
 	"github.com/prometheus/client_golang/prometheus"
+	"log"
 	"net/http"
 	"time"
 )
@@ -45,7 +46,9 @@ func (w *statusResponseWriter) WriteHeader(code int) {
 }
 
 func MetricsMiddleware(next http.Handler) http.Handler {
+
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		log.Println(r.URL.Path)
 		start := time.Now()
 
 		wrappedWriter := NewStatusResponseWriter(w)
@@ -57,5 +60,6 @@ func MetricsMiddleware(next http.Handler) http.Handler {
 
 		httpRequestsTotal.WithLabelValues(r.Method, r.URL.Path, http.StatusText(statusCode)).Inc()
 		httpRequestDuration.WithLabelValues(r.Method, r.URL.Path, http.StatusText(statusCode)).Observe(duration)
+		log.Println("new request:", r.URL.Path, r.Method)
 	})
 }

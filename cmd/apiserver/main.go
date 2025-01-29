@@ -23,10 +23,9 @@ func main() {
 	h := bankServ.NewBankHandler(bankService)
 	h.ApiRoute(r)
 	r.Mount("/debug/pprof/", http.StripPrefix("/debug/pprof", http.HandlerFunc(pprof.Index)))
-
-	err := http.ListenAndServe("localhost:8080", r)
+	log.Println("Сервер запущен")
+	err := http.ListenAndServe(":8080", r)
 	if err != nil {
 		log.Panic("Сервер недоступен")
 	}
-
 }

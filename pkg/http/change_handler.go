@@ -24,11 +24,11 @@ func (h *BankHandler) ChangeBalanceHandler(w http.ResponseWriter, req *http.Requ
 
 	}
 
-	user, err := h.bankService.ChangeBal(userReq.Operation, entity.Difference{userReq.Quantity}, userReq.ID)
+	_, err = h.bankService.ChangeBal(userReq.Operation, entity.Difference{userReq.Quantity}, userReq.ID)
 	if err != nil {
 		BeautifulErrorResponse(w, http.StatusBadRequest, err)
 		return
 	}
-	OkResponse(w, http.StatusOK, user)
+	OkResponse(w, http.StatusOK, "Успешно")
 
 }

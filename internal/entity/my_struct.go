@@ -12,3 +12,8 @@ type Balance struct {
 type Difference struct {
 	Quantity int
 }
+
+type UpdateUser struct {
+	ID     int
+	Change int
+}

@@ -4,7 +4,6 @@ import (
 	"context"
 	"fmt"
 	"github.com/jackc/pgx/v4"
-	"github.com/joho/godotenv"
 	"os"
 )
 
@@ -26,10 +25,10 @@ type BDInfo struct {
 
 func LoadEnv() (*Config, error) {
 
-	err := godotenv.Load()
-	if err != nil {
-		return nil, fmt.Errorf("Ошибка загрузки .env файла: %v", err)
-	}
+	//err := godotenv.Load()
+	//if err != nil {
+	//	return nil, fmt.Errorf("Ошибка загрузки .env файла: %v", err)
+	//}
 
 	config := &Config{
 		BDVersion{Version: os.Getenv("VERSION")},

@@ -9,10 +9,17 @@ func (b *BankService) add(amount entity.Difference, id int) (*entity.User, error
 		return nil, NegativeValueBalanceErr
 	}
 
-	err := b.Db.ChangeBalance(id, amount)
-	if err != nil {
-		return nil, err
-	}
+	//var userUpdate *entity.UpdateUser
+	//userUpdate.ID = id
+	//userUpdate.Change = amount.Quantity
+	userUpdate := entity.UpdateUser{ID: id, Change: amount.Quantity}
+
+	SendToRabbit(userUpdate)
+
+	//err := b.Db.ChangeBalance(id, amount)
+	//if err != nil {
+	//	return nil, err
+	//}
 	bal, _ := b.Db.ShowBalance(id)
 	return &entity.User{ID: id, Balance: entity.Balance{Money: bal}}, nil
 

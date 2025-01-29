@@ -36,7 +36,7 @@ func NewDB() *DB {
 
 func (db *DB) CreatePerson(id int, balance entity.Balance) error {
 
-	reqScl := "INSERT INTO bank.users (id, balance) VALUES ($1, $2)"
+	reqScl := "INSERT INTO public.users (id, balance) VALUES ($1, $2)"
 
 	_, err := db.Conn.Exec(context.Background(),
 		reqScl, id, balance.Money)
@@ -61,7 +61,7 @@ func (db *DB) ChangeBalance(id int, dif entity.Difference) error {
 		return err
 	}
 
-	reqSql := "UPDATE bank.users SET balance=balance+$1 WHERE id=$2"
+	reqSql := "UPDATE public.users SET balance=balance+$1 WHERE id=$2"
 	_, err = tx.Exec(context.Background(), reqSql, dif.Quantity, id)
 	if err != nil {
 		tx.Rollback(context.Background())
@@ -77,10 +77,9 @@ func (db *DB) ChangeBalance(id int, dif entity.Difference) error {
 func (db *DB) ShowBalance(id int) (int, error) {
 
 	var user User
-	reqSql := "SELECT id, balance FROM bank.users WHERE id=$1"
+	reqSql := "SELECT id, balance FROM public.users WHERE id=$1"
 	err := db.Conn.QueryRow(context.Background(), reqSql, id).Scan(&user.ID, &user.Balance)
 	if err != nil {
-		log.Print(err)
 		if err.Error() == "no rows in result set" {
 			return 0, service.NoAccountErr
 		}
@@ -92,7 +91,7 @@ func (db *DB) ShowBalance(id int) (int, error) {
 func (db *DB) ShowBalanceTx(tx pgx.Tx, id int) (int, error) {
 
 	var user User
-	reqSql := "SELECT id, balance FROM bank.users WHERE id=$1"
+	reqSql := "SELECT id, balance FROM public.users WHERE id=$1"
 	err := tx.QueryRow(context.Background(), reqSql, id).Scan(&user.ID, &user.Balance)
 	if err != nil {
 		if err.Error() == "no rows in result set" {
