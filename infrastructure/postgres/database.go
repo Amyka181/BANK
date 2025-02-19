@@ -34,12 +34,12 @@ func NewDB() *DB {
 	return &DB{Conn: conn}
 }
 
-func (db *DB) CreatePerson(id int, balance entity.Balance) error {
+func (db *DB) CreatePerson(person entity.User) error {
 
 	reqScl := "INSERT INTO public.users (id, balance) VALUES ($1, $2)"
 
 	_, err := db.Conn.Exec(context.Background(),
-		reqScl, id, balance.Money)
+		reqScl, person.ID, person.Balance.Money)
 	if err != nil {
 		if err.Error() == "ERROR: duplicate key value violates unique constraint \"users_id_key\" (SQLSTATE 23505)" {
 			return service.AccountExistErr

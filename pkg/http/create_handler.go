@@ -28,7 +28,7 @@ func (h *BankHandler) CreatePersonHandler(w http.ResponseWriter, req *http.Reque
 		return
 	}
 
-	user, err := h.bankService.CreateUser(userReq.ID, entity.Balance{Money: userReq.Balance})
+	user, err := h.bankService.CreateUser(entity.User{ID: userReq.ID, Balance: entity.Balance{userReq.Balance}})
 
 	if err != nil {
 		BeautifulErrorResponse(w, http.StatusBadRequest, err)

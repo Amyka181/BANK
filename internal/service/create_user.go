@@ -4,16 +4,16 @@ import (
 	"Bankirka/internal/entity"
 )
 
-func (b *BankService) CreateUser(id int, bal entity.Balance) (*entity.User, error) {
-	if bal.Money < 0 {
+func (b *BankService) CreateUser(person entity.User) (*entity.User, error) {
+	if person.Balance.Money < 0 {
 		return nil, NegativeBalanceErr
 	}
 
-	err := b.Db.CreatePerson(id, bal)
+	err := b.Db.CreatePerson(person)
 	if err != nil {
 		return nil, err
 	}
 
-	return &entity.User{ID: id, Balance: bal}, nil
+	return &entity.User{ID: person.ID, Balance: person.Balance}, nil
 
 }
