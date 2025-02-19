@@ -74,18 +74,18 @@ func (db *DB) ChangeBalance(id int, dif entity.Difference) error {
 
 }
 
-func (db *DB) ShowBalance(id int) (int, error) {
+func (db *DB) ShowBalance(person entity.User) (*entity.User, error) {
 
-	var user User
+	var user entity.User
 	reqSql := "SELECT id, balance FROM public.users WHERE id=$1"
-	err := db.Conn.QueryRow(context.Background(), reqSql, id).Scan(&user.ID, &user.Balance)
+	err := db.Conn.QueryRow(context.Background(), reqSql, person.ID).Scan(&user.ID, &user.Balance.Money)
 	if err != nil {
 		if err.Error() == "no rows in result set" {
-			return 0, service.NoAccountErr
+			return nil, service.NoAccountErr
 		}
-		return 0, err
+		return nil, err
 	}
-	return user.Balance, nil
+	return &user, nil
 }
 
 func (db *DB) ShowBalanceTx(tx pgx.Tx, id int) (int, error) {

@@ -1,0 +1,38 @@
+syntax = "proto3";
+
+package example;
+
+option go_package = "pkg/grpc";
+
+service UserService {
+  rpc Show (ShowRequest) returns (ShowResponse);
+  rpc Create (CreateRequest) returns (CreateResponse);
+  rpc Change (ChangeRequest) returns (ChangeResponse);
+}
+
+message ShowRequest {
+  int32 id = 1;
+}
+message ShowResponse {
+  int32 id = 1;
+  int32 Balance = 2;
+}
+message CreateRequest {
+  int32 id = 1;
+  int32 Balance = 2;
+}
+message CreateResponse {
+  int32 id = 1;
+  int32 Balance = 2;
+}
+message ChangeRequest {
+  int32 id = 1;
+  int32 Quantity = 2;
+  string Operation =3;
+}
+message ChangeResponse {
+  int32 id = 1;
+  int32 Balance = 2;
+}
+
+

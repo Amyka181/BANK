@@ -20,7 +20,7 @@ func (b *BankService) add(amount entity.Difference, id int) (*entity.User, error
 	//if err != nil {
 	//	return nil, err
 	//}
-	bal, _ := b.Db.ShowBalance(id)
-	return &entity.User{ID: id, Balance: entity.Balance{Money: bal}}, nil
+	bal, _ := b.Db.ShowBalance(entity.User{ID: id})
+	return &entity.User{ID: id, Balance: entity.Balance{Money: bal.Balance.Money}}, nil
 
 }

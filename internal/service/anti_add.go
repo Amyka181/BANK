@@ -9,12 +9,12 @@ func (b *BankService) antiAdd(amount entity.Difference, id int) (*entity.User, e
 		return nil, InvalidOperation
 	}
 
-	money, err := b.Db.ShowBalance(id)
+	money, err := b.Db.ShowBalance(entity.User{ID: id})
 	if err != nil {
 		return nil, err
 	}
 
-	if money+amount.Quantity*(-1) < 0 {
+	if money.Balance.Money+amount.Quantity*(-1) < 0 {
 		return nil, NoEnoughMoneyErr
 	}
 
@@ -27,7 +27,7 @@ func (b *BankService) antiAdd(amount entity.Difference, id int) (*entity.User, e
 	//if er != nil {
 	//	return nil, er
 	//}
-	bal, _ := b.Db.ShowBalance(id)
+	bal, _ := b.Db.ShowBalance(entity.User{ID: id})
 
-	return &entity.User{ID: id, Balance: entity.Balance{Money: bal}}, nil
+	return &entity.User{ID: id, Balance: entity.Balance{Money: bal.Balance.Money}}, nil
 }
