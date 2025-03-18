@@ -2,7 +2,7 @@ syntax = "proto3";
 
 package example;
 
-option go_package = "pkg/grpc";
+option go_package = "pkg/proto";
 
 service UserService {
   rpc Show (ShowRequest) returns (ShowResponse);

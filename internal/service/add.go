@@ -2,6 +2,7 @@ package service
 
 import (
 	"Bankirka/internal/entity"
+	"time"
 )
 
 func (b *BankService) add(amount entity.Difference, id int) (*entity.User, error) {
@@ -15,6 +16,7 @@ func (b *BankService) add(amount entity.Difference, id int) (*entity.User, error
 	userUpdate := entity.UpdateUser{ID: id, Change: amount.Quantity}
 
 	SendToRabbit(userUpdate)
+	time.Sleep(1 * time.Second)
 
 	//err := b.Db.ChangeBalance(id, amount)
 	//if err != nil {

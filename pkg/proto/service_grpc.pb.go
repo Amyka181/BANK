@@ -4,7 +4,7 @@
 // - protoc             v6.30.0--rc1
 // source: service.proto
 
-package grpc
+package proto
 
 import (
 	context "context"

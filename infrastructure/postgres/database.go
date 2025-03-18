@@ -19,13 +19,13 @@ type User struct {
 	Balance int
 }
 
-func NewDB() *DB {
+func NewDB(cfg config.Config) *DB {
 
-	cfg, err := config.LoadEnv()
-	if err != nil {
-		log.Fatalf("Ошибка загрузки конфигурации: %v", err)
-	}
-	conn, err := config.ConnectDB(cfg)
+	//cfg, err := config.LoadEnv()
+	//if err != nil {
+	//	log.Fatalf("Ошибка загрузки конфигурации: %v", err)
+	//}
+	conn, err := config.ConnectDB(&cfg)
 	if err != nil {
 		log.Fatalf("Ошибка при подключении к базе данных: %v", err)
 	}
