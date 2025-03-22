@@ -16,7 +16,7 @@ func (b *BankService) add(amount entity.Difference, id int) (*entity.User, error
 	userUpdate := entity.UpdateUser{ID: id, Change: amount.Quantity}
 
 	SendToRabbit(userUpdate)
-	time.Sleep(1 * time.Second)
+	time.Sleep(1 * time.Second) //TODO: зачем это?
 
 	//err := b.Db.ChangeBalance(id, amount)
 	//if err != nil {

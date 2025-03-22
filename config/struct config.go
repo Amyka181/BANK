@@ -51,6 +51,7 @@ func LoadConfig() (*Config, error) {
 	return &cfg, nil
 }
 
+// TODO: может раньше не заметил, но почему коннект к бд находится в папке конфиг)
 func ConnectDB(cfg *Config) (*pgx.Conn, error) {
 	connStr := fmt.Sprintf("postgres://%s:%s@%s:%d",
 		cfg.Database.User, cfg.Database.Password, cfg.Database.Host, cfg.Database.Port)

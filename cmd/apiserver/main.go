@@ -23,6 +23,7 @@ func main() {
 	cfg, err := config.LoadConfig()
 	if err != nil {
 		log.Println("Ошибка загрузки конфигурации: %v", err)
+		//TODO: а попробуй запустить сервер без конфига
 	}
 
 	//c := cache.New()

@@ -10,7 +10,7 @@ import (
 
 type Server struct {
 	proto.UnimplementedUserServiceServer
-	BankService service.BankService
+	BankService service.BankService //TODO: интерфейсы йоу
 }
 
 func NewServer(bs service.BankService) *Server {
