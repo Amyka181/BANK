@@ -22,8 +22,9 @@ func main() {
 
 	cfg, err := config.LoadConfig()
 	if err != nil {
-		log.Println("Ошибка загрузки конфигурации: %v", err)
-		//TODO: а попробуй запустить сервер без конфига
+		log.Println("Ошибка загрузки конфигурации: ", err)
+		return
+		//TODO: а попробуй запустить сервер без конфига - ну попоробовала
 	}
 
 	//c := cache.New()
@@ -39,7 +40,8 @@ func main() {
 	log.Println("Сервер запущен")
 	err = http.ListenAndServe(fmt.Sprintf(":%d", cfg.Server.Port), r)
 	if err != nil {
-		log.Panic("Сервер недоступен")
+		log.Println("Сервер недоступен")
+		return
 	}
 
 	// GRPC
@@ -49,7 +51,7 @@ func main() {
 	}
 
 	grpcServer := grpc.NewServer()
-	UserServiceServer := server.NewServer(*bankService)
+	UserServiceServer := server.NewServer(bankService)
 	proto.RegisterUserServiceServer(grpcServer, UserServiceServer)
 
 	log.Println("gRPC сервер запущен на порту 50051")

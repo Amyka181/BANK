@@ -7,14 +7,14 @@ import (
 func (b *BankService) ChangeBal(operation string, amount entity.Difference, id int) (*entity.User, error) {
 	switch operation {
 	case "пополнить":
-		user, err := b.add(amount, id)
+		user, err := b.Add(amount, id)
 		if err != nil {
 			return nil, err
 		} else {
 			return user, nil
 		}
 	case "снять":
-		user, err := b.antiAdd(amount, id)
+		user, err := b.AntiAdd(amount, id)
 		if err != nil {
 			return nil, err
 		} else {

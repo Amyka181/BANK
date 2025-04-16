@@ -1,9 +1,7 @@
 package config
 
 import (
-	"context"
 	"fmt"
-	"github.com/jackc/pgx/v4"
 	"github.com/spf13/viper"
 )
 
@@ -30,7 +28,6 @@ type Config struct {
 	}
 }
 
-// TODO: лучше использовать библиотеку для чтения из env как конфиг файл, например viper или envreader
 func LoadConfig() (*Config, error) {
 
 	viper.SetConfigName("config")
@@ -49,18 +46,4 @@ func LoadConfig() (*Config, error) {
 	}
 
 	return &cfg, nil
-}
-
-// TODO: может раньше не заметил, но почему коннект к бд находится в папке конфиг)
-func ConnectDB(cfg *Config) (*pgx.Conn, error) {
-	connStr := fmt.Sprintf("postgres://%s:%s@%s:%d",
-		cfg.Database.User, cfg.Database.Password, cfg.Database.Host, cfg.Database.Port)
-
-	conn, err := pgx.Connect(context.Background(), connStr)
-	if err != nil {
-		return nil, err
-	}
-
-	return conn, nil
-
 }

@@ -1,5 +1,5 @@
 syntax = "proto3";
-//TODO: лучше перенести фал в специальное место, например в папку proto
+
 package example;
 
 option go_package = "pkg/proto";

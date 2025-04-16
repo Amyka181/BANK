@@ -25,13 +25,26 @@ func NewDB(cfg config.Config) *DB {
 	//if err != nil {
 	//	log.Fatalf("Ошибка загрузки конфигурации: %v", err)
 	//}
-	conn, err := config.ConnectDB(&cfg)
+	conn, err := ConnectDB(&cfg)
 	if err != nil {
 		log.Fatalf("Ошибка при подключении к базе данных: %v", err)
 	}
 
 	fmt.Println("Успешное подключение к базе данных!")
 	return &DB{Conn: conn}
+}
+
+func ConnectDB(cfg *config.Config) (*pgx.Conn, error) {
+	connStr := fmt.Sprintf("postgres://%s:%s@%s:%d",
+		cfg.Database.User, cfg.Database.Password, cfg.Database.Host, cfg.Database.Port)
+
+	conn, err := pgx.Connect(context.Background(), connStr)
+	if err != nil {
+		return nil, err
+	}
+
+	return conn, nil
+
 }
 
 func (db *DB) CreatePerson(person entity.User) error {

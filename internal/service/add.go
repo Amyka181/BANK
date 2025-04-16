@@ -5,7 +5,7 @@ import (
 	"time"
 )
 
-func (b *BankService) add(amount entity.Difference, id int) (*entity.User, error) {
+func (b *BankService) Add(amount entity.Difference, id int) (*entity.User, error) {
 	if amount.Quantity < 0 {
 		return nil, NegativeValueBalanceErr
 	}
@@ -16,7 +16,7 @@ func (b *BankService) add(amount entity.Difference, id int) (*entity.User, error
 	userUpdate := entity.UpdateUser{ID: id, Change: amount.Quantity}
 
 	SendToRabbit(userUpdate)
-	time.Sleep(1 * time.Second) //TODO: зачем это?
+	time.Sleep(1 * time.Second)
 
 	//err := b.Db.ChangeBalance(id, amount)
 	//if err != nil {

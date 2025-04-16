@@ -1,9 +1,8 @@
 package entity
 
-// TODO: если структуры отдаются в ответе http то лучше добавить к ним теги в snake_case
 type User struct {
-	ID      int
-	Balance Balance
+	ID      int     `json:"id"`
+	Balance Balance `json:"balance"`
 }
 
 type Balance struct {

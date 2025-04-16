@@ -5,7 +5,7 @@ import (
 	"time"
 )
 
-func (b *BankService) antiAdd(amount entity.Difference, id int) (*entity.User, error) {
+func (b *BankService) AntiAdd(amount entity.Difference, id int) (*entity.User, error) {
 	if amount.Quantity < 0 {
 		return nil, InvalidOperation
 	}
